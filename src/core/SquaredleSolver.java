@@ -33,16 +33,27 @@ public class SquaredleSolver {
 		
 		//build the board dictionary
 		try {
+			String word = "";
 			File dictFile = new File("resource/dictionary.txt");
 			Scanner scanner = new Scanner(dictFile);
 			scanner.useDelimiter(Pattern.compile(";"));
 			while (scanner.hasNext()) {
-				String word = scanner.next();
+				word = scanner.next();
 				if (!pattern.matcher(word).find()) {
 					this.dictionary.add(word);
 				}
 			}
 			scanner.close();
+//			File addendumFile = new File("resource/addendum.txt");
+//			scanner = new Scanner(addendumFile);
+//			scanner.useDelimiter(Pattern.compile(";"));
+//			while (scanner.hasNext()) {
+//				word = scanner.next();
+//				if (!pattern.matcher(word).find()) {
+//					this.dictionary.add(word);
+//				}
+//			}
+//			scanner.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
