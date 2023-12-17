@@ -44,16 +44,6 @@ public class SquaredleSolver {
 				}
 			}
 			scanner.close();
-//			File addendumFile = new File("resource/addendum.txt");
-//			scanner = new Scanner(addendumFile);
-//			scanner.useDelimiter(Pattern.compile(";"));
-//			while (scanner.hasNext()) {
-//				word = scanner.next();
-//				if (!pattern.matcher(word).find()) {
-//					this.dictionary.add(word);
-//				}
-//			}
-//			scanner.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
