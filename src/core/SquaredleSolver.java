@@ -30,12 +30,10 @@ public class SquaredleSolver {
 		}
 		String illegals = buffer.toString();
 		Pattern pattern = Pattern.compile(illegals);
-		
+		File dictFile = new File("resource/dictionary.txt");
 		//build the board dictionary
-		try {
-			String word = "";
-			File dictFile = new File("resource/dictionary.txt");
-			Scanner scanner = new Scanner(dictFile);
+		try (Scanner scanner = new Scanner(dictFile)){
+			String word = "";		
 			scanner.useDelimiter(Pattern.compile(";"));
 			while (scanner.hasNext()) {
 				word = scanner.next();
@@ -43,7 +41,6 @@ public class SquaredleSolver {
 					this.dictionary.add(word);
 				}
 			}
-			scanner.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,20 +84,6 @@ public class SquaredleSolver {
 				}
 			}
 		}
-		
-		// old code, kept for never being used in the future
-//		Set<SquaredleNode> temp = node.getNeighborsOf(word.charAt(i));
-//		List<SquaredleNode> paths = new ArrayList<SquaredleNode>();
-//		paths.addAll(temp);
-//		for (int k = 0; k < paths.size(); k++) {
-//			if (!visited.contains(paths.get(k))) {
-//				if (checkWordHelper(word, i+1, paths.get(k), visited)) {
-//					return true;
-//				}
-//			}
-//
-//		}
-		
 		visited.remove(node);
 		return false;
 	}
