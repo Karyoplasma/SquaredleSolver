@@ -5,10 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -88,8 +89,6 @@ public class SquaredlePuzzleManager {
 		Instant now = Instant.now();
 		Instant adjusted = now.minusSeconds(12 * 3600);
 		LocalDateTime adjustedDate = LocalDateTime.ofInstant(adjusted, ZoneOffset.UTC);
-
-		// Format the date in the desired format (YYYY/MM/DD)
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		return adjustedDate.format(formatter);
 	}
@@ -100,9 +99,10 @@ public class SquaredlePuzzleManager {
 		}
 		String fileUrl = "https://squaredle.app/api/today-puzzle-config.js";
 		Path savePath = Paths.get("resource/today-puzzle-config.js");
-
-		try (InputStream inputStream = new URL(fileUrl).openStream()) {
-			Files.copy(inputStream, savePath);
+		URI fileURI = URI.create(fileUrl);
+		
+		try (InputStream inputStream = fileURI.toURL().openStream()) {
+			Files.copy(inputStream, savePath, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			System.err.println("Failed to download the file: ");
 			e.printStackTrace();
