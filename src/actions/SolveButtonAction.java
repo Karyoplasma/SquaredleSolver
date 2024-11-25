@@ -22,19 +22,19 @@ public class SolveButtonAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		if (gui.textFieldBoard.getText().equals("")) {
+		String boardText = this.gui.getBoard();
+		if (boardText.equals("")) {
 			return;
 		}
 		try {
-			SquaredleBoard board = new SquaredleBoard(gui.textFieldBoard.getText());
+			SquaredleBoard board = new SquaredleBoard(boardText);
 			SquaredleSolver solver = new SquaredleSolver(board);
 
-			gui.solutions = solver.solveSquaredle();
-			this.arrangeResults(gui.solutions);
-			gui.btnAutotype.setEnabled(true);
+			this.gui.setSolutions(solver.solveSquaredle());
+			this.arrangeResults(this.gui.getSolutions());
+			this.gui.unlockAutoType();
 		} catch (IllegalArgumentException boardException) {
-			gui.textAreaResults.setText(boardException.getMessage());
+			this.gui.setResultText(boardException.getMessage());
 		}
 
 	}
@@ -72,7 +72,7 @@ public class SolveButtonAction extends AbstractAction {
 			}
 
 		}
-		gui.textAreaResults.setText(buffer.toString());
+		this.gui.setResultText(buffer.toString());
 
 	}
 

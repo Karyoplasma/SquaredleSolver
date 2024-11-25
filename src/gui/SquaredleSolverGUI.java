@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.AWTException;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import net.miginfocom.swing.MigLayout;
@@ -12,17 +13,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import actions.URLLabelMouseAdapter;
+import core.AutoTypeRobot;
+import core.Puzzle;
 import actions.AutoTypeButtonAction;
+import actions.PuzzleComboBoxActionListener;
 import actions.SolveButtonAction;
+import javax.swing.JComboBox;
 
 public class SquaredleSolverGUI {
 	
-	public List<String> solutions;
+	private List<String> solutions;
 	private JFrame frmSquaredleCleaner;
-	public JTextArea textAreaResults;
+	private JTextArea textAreaResults;
 	private JButton btnSolve;
-	public JTextField textFieldBoard;
-	public JButton btnAutotype;
+	private JTextField textFieldBoard;
+	private JButton btnAutotype;
+	private JComboBox<Puzzle> comboBox_puzzles;
+	private AutoTypeRobot robot;
 
 	/**
 	 * Launch the application.
@@ -84,5 +91,58 @@ public class SquaredleSolverGUI {
 		btnAutotype.setFont(new Font("Tahoma", Font.BOLD, 14));
 		btnAutotype.setEnabled(false);
 		frmSquaredleCleaner.getContentPane().add(btnAutotype, "cell 1 0");
+		
+		comboBox_puzzles = new JComboBox<Puzzle>(Puzzle.values());
+		comboBox_puzzles.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		comboBox_puzzles.addActionListener(new PuzzleComboBoxActionListener(this));
+		frmSquaredleCleaner.getContentPane().add(comboBox_puzzles, "cell 1 0,growx");
+		
+		try {
+			this.robot = new AutoTypeRobot();
+		} catch (AWTException e) {
+			this.robot = null;
+		}
+
+	}
+	
+	public Puzzle getPuzzleSelection() {
+		return (Puzzle) this.comboBox_puzzles.getSelectedItem();
+	}
+	
+	public void toggleButtonText() {
+		if (this.btnAutotype.getText().equals("Cancel")) {
+			this.btnAutotype.setText("Auto-type");
+		} else {
+			this.btnAutotype.setText("Cancel");
+		}
+		
+	}
+	
+	public void setBoard(String board) {
+		this.textFieldBoard.setText(board);
+	}
+	
+	public void setResultText(String text) {
+		this.textAreaResults.setText(text);
+	}
+	
+	public void unlockAutoType() {
+		this.btnAutotype.setEnabled(true);
+	}
+	
+	public String getBoard() {
+		return this.textFieldBoard.getText();
+	}
+	
+	public AutoTypeRobot getRobot() {
+		return this.robot;
+	}
+	
+	public List<String> getSolutions(){
+		return this.solutions;
+	}
+	
+	public void setSolutions(List<String> solutions){
+		this.solutions = solutions;
 	}
 }
